@@ -3,7 +3,6 @@ import sqlite3
 
 class SQLiteDB:
     """ Simple sqlite connection manager class """
-
     def __init__(self, dbname):
         self.connection = None
         self.cursor = None
@@ -33,18 +32,50 @@ class SQLiteDB:
         res = self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
         # fetch all tables
         tables = res.fetchall()
-        return [table[0] for table in tables]
+        return self.menu.select(f"Choose table in {self.dbname}", [table[0] for table in tables])
 
-    def show(self):
-        """ show menu with table choices """
-        try:
-            # question to put in choices with list of DB name
-            return self.menu.select(f"Choose databases in {self.dbname}", self.tables())
-        
-        except Exception as e:
-            print('exception error:', e)
-            self.disconnect()
-        
     def disconnect(self):
         """ close sqlite connection """
         self.connection.close()
+
+    def create(self): 
+        pass
+
+    def read(self, table):
+        """ fetch all data in table """
+        query = self.cursor.execute(f"SELECT * FROM {table}")
+        return self.menu.select(
+            f"Data in {table}",
+            query.fetchall()
+        )
+
+    def update(self, table):
+        """ update selected row """
+        row = self.read(table)
+        tns = self.cursor.execute(f"SELECT name FROM PRAGMA_TABLE_INFO('{table}')")
+        column = self.menu.select(
+            f"Select column to edit :",
+            [tn[0] for tn in tns]
+        )
+
+        value = self.menu.text("Value to update :")
+        self.cursor.execute(f"UPDATE {table} SET {column} = '{value}' WHERE id = {int(row[0])}")
+        self.connection.commit()
+
+    def delete(self, table):
+        """ delete selected row """
+        row = self.read(table)
+        self.cursor.execute(f"DELETE FROM {table} WHERE id = {int(row[0])}")
+        self.connection.commit()
+
+    def __call__(self, method, table):
+        """ method to redirect into CRUD """
+        match method:
+            case 'create':
+                self.create(table)
+            case 'read':
+                self.read(table)
+            case 'update':
+                self.update(table)
+            case 'delete':
+                self.delete(table)

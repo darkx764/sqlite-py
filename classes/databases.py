@@ -9,7 +9,10 @@ class databases:
 
     def list(self, path):
         """ list all databases available in databases folder. """
-        return os.listdir(path)
+        try:
+            return os.listdir(path)
+        except Exception as e:
+            print(f"Exception in databases.py : {e}")
     
     def show(self):
         """ prompt menu with all tables available. """
