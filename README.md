@@ -13,14 +13,15 @@ Simple sqlite manager that use CLI prompt from InquirerPy package.
 - Terminal  
   
 ## installation  
-first, create 'databases' folder on root path, and place your database there.  
-then to configure the project,
+to configure the project,
 
 ```bash 
 git clone https://github.com/darkx764/sqlite-py.git
 python -m venv venv #(optional) to create virtual environment
 pip install -r requirements.txt
 ```  
+  
+then create a folder name 'databases' in the root path.
   
 run the program
 ```bash
