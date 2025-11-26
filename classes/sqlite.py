@@ -37,9 +37,20 @@ class SQLiteDB:
         """ close sqlite connection """
         self.connection.close()
 
-    def create(self): 
-        pass
+    def columns(self, table):
+        """ get selected table columns """
+        return self.cursor.execute(f"SELECT name FROM PRAGMA_TABLE_INFO('{table}')")
 
+    def create(self, table): 
+        """ create a row """
+        columns = self.columns(table)
+        lists = []
+        for column in columns:
+            val = menu.text(f"{column[0]}: ")
+            lists.append(val)
+        print(lists)
+        """ need to improve in term of saving follow with column datatype """
+        # self.cursor.execute(f"INSERT INTO {table} ({column[0] for column in columns}) VALUES ({lists})")
     def read(self, table):
         """ fetch all data in table """
         query = self.cursor.execute(f"SELECT * FROM {table}")
@@ -51,12 +62,11 @@ class SQLiteDB:
     def update(self, table):
         """ update selected row """
         row = self.read(table)
-        tns = self.cursor.execute(f"SELECT name FROM PRAGMA_TABLE_INFO('{table}')")
+        columns = self.columns(table)
         column = menu.select(
             f"Select column to edit :",
-            [tn[0] for tn in tns]
+            [tn[0] for tn in columns]
         )
-
         value = menu.text("Value to update :")
         self.cursor.execute(f"UPDATE {table} SET {column} = '{value}' WHERE id = {int(row[0])}")
         self.connection.commit()
