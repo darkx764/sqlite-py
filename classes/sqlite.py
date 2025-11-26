@@ -6,7 +6,6 @@ class SQLiteDB:
     def __init__(self, dbname):
         self.connection = None
         self.cursor = None
-        self.menu = menu() # create menu instance
         self.dbname = f"databases/{dbname}" # db path name
         self.connect() # connect db
 
@@ -32,7 +31,7 @@ class SQLiteDB:
         res = self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
         # fetch all tables
         tables = res.fetchall()
-        return self.menu.select(f"Choose table in {self.dbname}", [table[0] for table in tables])
+        return menu.select(f"Choose table in {self.dbname}", [table[0] for table in tables])
 
     def disconnect(self):
         """ close sqlite connection """
@@ -44,7 +43,7 @@ class SQLiteDB:
     def read(self, table):
         """ fetch all data in table """
         query = self.cursor.execute(f"SELECT * FROM {table}")
-        return self.menu.select(
+        return menu.select(
             f"Data in {table}",
             query.fetchall()
         )
@@ -53,12 +52,12 @@ class SQLiteDB:
         """ update selected row """
         row = self.read(table)
         tns = self.cursor.execute(f"SELECT name FROM PRAGMA_TABLE_INFO('{table}')")
-        column = self.menu.select(
+        column = menu.select(
             f"Select column to edit :",
             [tn[0] for tn in tns]
         )
 
-        value = self.menu.text("Value to update :")
+        value = menu.text("Value to update :")
         self.cursor.execute(f"UPDATE {table} SET {column} = '{value}' WHERE id = {int(row[0])}")
         self.connection.commit()
 
