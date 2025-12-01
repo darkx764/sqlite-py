@@ -31,7 +31,7 @@ class SQLiteDB:
         res = self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
         # fetch all tables
         tables = res.fetchall()
-        return menu.select(f"Choose table in {self.dbname}", [table[0] for table in tables])
+        return menu.select(f"Choose table in {self.dbname}", ['< back'] + [table[0] for table in tables])
 
     def disconnect(self):
         """ close sqlite connection """

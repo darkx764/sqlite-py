@@ -13,7 +13,7 @@ class menu:
         """ prompt select menu """
         return inquirer.select(
             message=f"{message}",
-                choices=['< back'] + choices
+                choices = choices
         ).execute()
 
     @staticmethod

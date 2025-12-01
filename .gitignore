@@ -5,3 +5,9 @@ __pycache__/
 
 #databases folder
 databases/*
+
+#temporary folder for testing
+temp/*
+
+# stirage to save log files
+storage/*

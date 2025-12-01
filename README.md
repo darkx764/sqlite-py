@@ -17,7 +17,7 @@ to configure the project,
 
 ```bash 
 git clone https://github.com/darkx764/sqlite-py.git
-python -m venv venv #(optional) to create virtual environment
+python -m venv venv # (optional) to create virtual environment
 pip install -r requirements.txt
 ```  
   
