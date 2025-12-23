@@ -1,4 +1,4 @@
-# sqlite-py
+# SQLite-py
 Simple sqlite manager that use CLI prompt from InquirerPy package.  
   
 ## features  
