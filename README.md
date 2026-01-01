@@ -25,6 +25,7 @@ then create a folder name 'databases' in the root path.
   
 run the program
 ```bash
+source venv/bin/activate # (optional) if you create python venv as command above
 python main.py
 ```
 ## license
